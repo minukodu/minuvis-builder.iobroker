@@ -2,481 +2,18 @@
 var variables = [];
 var socket;
 var showInfoText = false;
-var filePath = "minukodu"
+var filePath = "minukodu";
 
-//var templates = getTemplates();
-//console.log(templates);
-
-var templates = {};
-
-templates.widgets = [];
-
-templates.configJSprePend = "const appConfig =";
-templates.configJSpostPend = ";localStorage.setItem('appConfig', JSON.stringify(appConfig));";
-
-templates.pageTab = `
-  <li class="nav-item page-nav-item">
-      <a href="#pageHome" class="nav-link menu-link-page">
-          <i class="far fa-newspaper nav-icon"></i>
-          <i class="fas fa-rocket nav-startpage-icon visibility-hidden"></i>
-          <p>
-              <span class="page-number">Page 1</span>
-              <span class="page-separator"> - </span>
-              <span class="page-title">PageName</span>
-          </p>
-      </a>
-  </li>`;
-
-templates.page = `
-  <!-- page -->
-  <div class="tab-pane page tinted nested-sortable" data-id="60248645-ca99-4c2c-8d14-b614665439ae"
-  id="60248645-ca99-4c2c-8d14-b614665439ae">
-
-  <!-- title ans startpage -->
-  <form class="form-inline mb-3">
-      <div class="input-group input-group-sm">
-      <div class="input-group-prepend">
-          <span class="input-group-text alert-info label-page-name">Page 1</span>
-      </div>
-      <input type="text" class="form-control  form-control-sm page-title" placeholder="Name of page"
-          value="Page 1">
-      </div>
-      <div class="form-check ml-2">
-      <input class="form-check-input isstartpage" type="checkbox">
-      <label class="form-check-label">
-          is Startpage
-      </label>
-      </div>
-      <div class="form widget-dropdown-holder">
-      </div>
-      <!-- delete button -->
-      <button type="button" class="btn btn-sm btn-labeled btn-outline-danger btn-page-delete mt-1"
-      style="">
-      <span class="btn-label"><i class="far fa-trash-alt"></i></span>
-      delete Page
-      </button>
-  </form>
-
-  <!-- widgets -->
-  <div class="widget-holder">
-      
-      <div class="widget-holder-end" class="hidden"></div>
-  </div>
-  </div> <!-- /page -->
-`;
-
-templates.widgets["switch"] = `
-<div class="card widget switch" data-widgettype="switch">
-<div class="card-header">
-<i class="fas fa-arrows-alt handle"></i>
-<h5 class="card-title">Switch</h5>
-<small class="settings ml-4">title:&nbsp;
-  <strong class="settings-title">Set title ...</strong>
-  &nbsp;state:&nbsp;
-  <strong class="settings-state">...</strong>
-  </small>
-<div class="card-tools">
-  <button type="button" class="btn btn-tool btn-widget-copy">
-    <i class="fas fa-copy"></i>
-  </button>
-  <button type="button" class="btn btn-tool btn-widget-collapse">
-    <i class="fas fa-minus"></i>
-  </button>
-  <button type="button" class="btn btn-tool btn-widget-remove">
-    <i class="fas fa-times"></i>
-  </button>
-</div><!-- /card-tools -->
-</div><!-- /card-header -->
-<div class="card-body">
-<!-- title -->
-<div class="widget-title-form form">
-  <div class="form-group">
-    <input type="text" class="form-control form-control-sm title" value="Set title ...">
-    <small class="form-text text-muted hidden">NONE to hide title</small>
-  </div>
-</div>
-<form>
-  <div class="input-group mb-3">
-    <input type="text" class="form-control stateSelect" disabled="disabled" placeholder="state">
-    <div class="input-group-append">
-      <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#selectModal"
-        data-select="stateSelect">select State</button>
-    </div>
-  </div>
-</form>
-</div> <!-- /card-body -->
-</div>
-`;
-
-
-templates.widgets["indicator"] = `
-<div class="card widget indicator" data-widgettype="indicator">
-<div class="card-header">
-<i class="fas fa-arrows-alt handle"></i>
-<h5 class="card-title">Indicator</h5>
-<small class="settings ml-4">title:&nbsp;
-  <strong class="settings-title">Set title ...</strong>
-  &nbsp;icon:&nbsp;
-  <strong class="settings-icon">it_wifi</strong>
-  &nbsp;state:&nbsp;
-  <strong class="settings-state">...</strong>
-  </small>
-<div class="card-tools">
-  <button type="button" class="btn btn-tool btn-widget-copy">
-    <i class="fas fa-copy"></i>
-  </button>
-  <button type="button" class="btn btn-tool btn-widget-collapse">
-    <i class="fas fa-minus"></i>
-  </button>
-  <button type="button" class="btn btn-tool btn-widget-remove">
-    <i class="fas fa-times"></i>
-  </button>
-</div><!-- /card-tools -->
-</div><!-- /card-header -->
-<div class="card-body">
-<!-- title -->
-<div class="widget-title-form form">
-  <div class="form-group">
-    <input type="text" class="form-control form-control-sm title" value="Set title ...">
-    <small class="form-text text-muted hidden">NONE to hide title</small>
-  </div>
-</div>
-<!-- icon, alarm, negate -->
-<form class="form form-inline">
-  <div class="form-group">
-    <div class="input-group mb-3 iconSelect" data-icon="it_wifi">
-        <div class="input-group-prepend">
-            <span class="input-group-text"><i class="mfd-icon it_wifi"></i></span>
-        </div>
-        <div class="input-group-append">
-          <button class="btn btn-primary" type="button" data-toggle="modal"
-            data-target="#selectModal" data-select="iconSelect">
-            select Icon
-          </button>
-        </div>
-    </div>
-  </div>
-  <div class="form-group form-check ml-3">
-    <input type="checkbox" class="form-check-input showasalarm">
-    <label class="form-check-label">Show as Alarm</label>
-  </div>
-  <div class="form-group form-check ml-2">
-    <input type="checkbox" class="form-check-input negate">
-    <label class="form-check-label">negate signal</label>
-  </div>
-</form>
-<form>
-  <div class="input-group mb-3">
-    <input type="text" class="form-control stateSelect" disabled="disabled" placeholder="state">
-    <div class="input-group-append">
-      <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#selectModal"
-        data-select="stateSelect">select State</button>
-    </div>
-  </div>
-</form>
-</div> <!-- /card-body -->
-</div>
-`;
-
-templates.widgets["slider"] = `
-<div class="card widget slider" data-widgettype="slider">
-<div class="card-header">
-<i class="fas fa-arrows-alt handle"></i>
-<h5 class="card-title">Slider</h5>
-<small class="settings ml-4">title:&nbsp;
-  <strong class="settings-title">Set title ...</strong>
-  &nbsp;state:&nbsp;
-  <strong class="settings-state">...</strong>
-  </small>
-<div class="card-tools">
-  <button type="button" class="btn btn-tool btn-widget-copy">
-    <i class="fas fa-copy"></i>
-  </button>
-  <button type="button" class="btn btn-tool btn-widget-collapse">
-    <i class="fas fa-minus"></i>
-  </button>
-  <button type="button" class="btn btn-tool btn-widget-remove">
-    <i class="fas fa-times"></i>
-  </button>
-</div><!-- /card-tools -->
-</div><!-- /card-header -->
-<div class="card-body">
-<!-- title -->
-<div class="widget-title-form form">
-  <div class="form-group">
-    <input type="text" class="form-control form-control-sm title" value="NONE">
-    <small class="form-text text-muted hidden">NONE to hide title</small>
-  </div>
-</div>
-<form>
-  <div class="input-group input-group-sm mb-2">
-  <div class="input-group-prepend">
-      <span class="input-group-text alert-info">Minimum</span>
-  </div>
-  <input type="text" class="form-control  form-control-sm minimum" value="0">
-</div>
-<div class="input-group input-group-sm mb-2">
-<div class="input-group-prepend">
-    <span class="input-group-text alert-info">Maximum</span>
-</div>
-<input type="text" class="form-control  form-control-sm maximum" value="100">
-</div>
-<div class="input-group input-group-sm mb-2">
-<div class="input-group-prepend">
-    <span class="input-group-text alert-info">Step</span>
-</div>
-<input type="text" class="form-control  form-control-sm step" value="5">
-</div>
-<div class="input-group input-group-sm mb-2">
-<div class="input-group-prepend">
-    <span class="input-group-text alert-info">Unit</span>
-</div>
-<input type="text" class="form-control  form-control-sm unit" value="%">
-</div>
-</form>
-<form>
-  <div class="input-group mb-3">
-    <input type="text" class="form-control stateSelect" disabled="disabled" placeholder="state">
-    <div class="input-group-append">
-      <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#selectModal"
-        data-select="stateSelect">select State</button>
-    </div>
-  </div>
-</form>
-</div> <!-- /card-body -->
-</div>
-`;
-
-templates.widgets["output"] = `
-<div class="card widget output" data-widgettype="output">
-<div class="card-header">
-<i class="fas fa-arrows-alt handle"></i>
-<h5 class="card-title">Output</h5>
-<small class="settings ml-4">title:&nbsp;
-  <strong class="settings-title">Set title ...</strong>
-  &nbsp;state:&nbsp;
-  <strong class="settings-state">...</strong>
-  </small>
-<div class="card-tools">
-  <button type="button" class="btn btn-tool btn-widget-copy">
-    <i class="fas fa-copy"></i>
-  </button>
-  <button type="button" class="btn btn-tool btn-widget-collapse">
-    <i class="fas fa-minus"></i>
-  </button>
-  <button type="button" class="btn btn-tool btn-widget-remove">
-    <i class="fas fa-times"></i>
-  </button>
-</div><!-- /card-tools -->
-</div><!-- /card-header -->
-<div class="card-body">
-<!-- title -->
-<div class="widget-title-form form">
-  <div class="form-group">
-    <input type="text" class="form-control form-control-sm title" value="NONE">
-    <small class="form-text text-muted hidden">NONE to hide title</small>
-  </div>
-</div>
-<form>
-  <div class="input-group input-group-sm mb-2">
-    <div class="input-group-prepend">
-        <span class="input-group-text alert-info">Unit</span>
-    </div>
-    <input type="text" class="form-control  form-control-sm unit" value="%">
-  </div>
-</form>
-<form>
-  <div class="input-group mb-3">
-    <input type="text" class="form-control stateSelect" disabled="disabled" placeholder="state">
-    <div class="input-group-append">
-      <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#selectModal"
-        data-select="stateSelect">select State</button>
-    </div>
-  </div>
-</form>
-</div> <!-- /card-body -->
-</div>
-`;
-
-templates.widgets["html"] = `
-<div class="card widget html" data-widgettype="html">
-<div class="card-header">
-<i class="fas fa-arrows-alt handle"></i>
-<h5 class="card-title">Html</h5>
-<small class="settings ml-4">title:&nbsp;
-  <strong class="settings-title">NONE</strong>
-  &nbsp;state:&nbsp;
-  <strong class="settings-state">...</strong>
-  </small>
-<div class="card-tools">
-  <button type="button" class="btn btn-tool btn-widget-copy">
-    <i class="fas fa-copy"></i>
-  </button>
-  <button type="button" class="btn btn-tool btn-widget-collapse">
-    <i class="fas fa-minus"></i>
-  </button>
-  <button type="button" class="btn btn-tool btn-widget-remove">
-    <i class="fas fa-times"></i>
-  </button>
-</div><!-- /card-tools -->
-</div><!-- /card-header -->
-<div class="card-body">
-<!-- title -->
-<div class="widget-title-form form">
-  <div class="form-group">
-    <input type="text" class="form-control form-control-sm title" value="NONE">
-    <small class="form-text text-muted">NONE to hide title</small>
-  </div>
-</div>
-<form>
-  <div class="input-group mb-3">
-    <input type="text" class="form-control stateSelect" disabled="disabled" placeholder="state">
-    <div class="input-group-append">
-      <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#selectModal"
-        data-select="stateSelect">select State</button>
-    </div>
-  </div>
-</form>
-</div> <!-- /card-body -->
-</div>
-`;
-
-templates.widgets["iframe"] = `
-<div class="card widget iframe" data-widgettype="iframe">
-<div class="card-header">
-<i class="fas fa-arrows-alt handle"></i>
-<h5 class="card-title">IFrame</h5>
-<small class="settings ml-4">title:&nbsp;
-  <strong class="settings-title">NONE</strong>
-  &nbsp;url:&nbsp;
-  <strong class="settings-url">https://iobroker.com</strong>
-  </small>
-<div class="card-tools">
-  <button type="button" class="btn btn-tool btn-widget-copy">
-    <i class="fas fa-copy"></i>
-  </button>
-  <button type="button" class="btn btn-tool btn-widget-collapse">
-    <i class="fas fa-minus"></i>
-  </button>
-  <button type="button" class="btn btn-tool btn-widget-remove">
-    <i class="fas fa-times"></i>
-  </button>
-</div><!-- /card-tools -->
-</div><!-- /card-header -->
-<div class="card-body">
-<!-- title -->
-<div class="widget-title-form form">
-  <div class="form-group">
-    <input type="text" class="form-control form-control-sm title" value="NONE">
-    <small class="form-text text-muted">NONE to hide title</small>
-  </div>
-</div>
-<form>
-  <div class="input-group input-group-sm">
-    <div class="input-group-prepend">
-        <span class="input-group-text alert-info">URL</span>
-    </div>
-    <input type="url" class="form-control  form-control-sm url"
-          placeholder="https://iobroker.com/" value="https://iobroker.com/" />
-  </div>
-  <div class="input-group input-group-sm mt-1">
-    <div class="input-group-prepend">
-        <span class="input-group-text alert-info ">Update-time in seconds</span>
-    </div>
-    <input type="text" class="form-control  form-control-sm updateTimeSek" value="600">
-  </div>
-  <div class="input-group input-group-sm mt-1">
-  <div class="input-group-prepend">
-      <span class="input-group-text alert-info ">width in px or %</span>
-  </div>
-  <input type="text" class="form-control  form-control-sm width" value="100%">
-</div>
-<div class="input-group input-group-sm mt-1">
-<div class="input-group-prepend">
-    <span class="input-group-text alert-info ">height in px or %</span>
-</div>
-<input type="text" class="form-control  form-control-sm height" value="600px">
-</div>
-</form>
-</div> <!-- /card-body -->
-</div>
-`;
-
-templates.widgets["imgoutput"] = `
-<div class="card widget imgoutput" data-widgettype="imgoutput">
-<div class="card-header">
-<i class="fas fa-arrows-alt handle"></i>
-<h5 class="card-title">ImgOutput</h5>
-<small class="settings ml-4">title:&nbsp;
-  <strong class="settings-title">NONE</strong>
-  &nbsp;url:&nbsp;
-  <strong class="settings-url">http://placekitten.com/640/360</strong>
-  </small>
-<div class="card-tools">
-  <button type="button" class="btn btn-tool btn-widget-copy">
-    <i class="fas fa-copy"></i>
-  </button>
-  <button type="button" class="btn btn-tool btn-widget-collapse">
-    <i class="fas fa-minus"></i>
-  </button>
-  <button type="button" class="btn btn-tool btn-widget-remove">
-    <i class="fas fa-times"></i>
-  </button>
-</div><!-- /card-tools -->
-</div><!-- /card-header -->
-<div class="card-body">
-<!-- title -->
-<div class="widget-title-form form">
-  <div class="form-group">
-    <input type="text" class="form-control form-control-sm title" value="NONE">
-    <small class="form-text text-muted">NONE to hide title</small>
-  </div>
-</div>
-<form>
-  <div class="input-group input-group-sm">
-    <div class="input-group-prepend">
-        <span class="input-group-text alert-info ">URL</span>
-    </div>
-    <input type="url" class="form-control  form-control-sm url"
-          placeholder="http://placekitten.com/640/360" value="http://placekitten.com/640/360" />
-  </div>
-  <div class="input-group input-group-sm mt-1">
-    <div class="input-group-prepend">
-        <span class="input-group-text alert-info ">Update-time in seconds</span>
-    </div>
-    <input type="text" class="form-control  form-control-sm updateTimeSek" value="600">
-  </div>
-</form>
-</div> <!-- /card-body -->
-</div>
-`;
-
-templates.widgets["filler"] = `
-<div class="card widget filler" data-widgettype="filler">
-  <div class="card-header">
-    <i class="fas fa-arrows-alt handle"></i>
-    <h5 class="card-title">Filler</h5>
-    <small class="settings ml-4">no extra settings</small>
-    <div class="card-tools">
-      <button type="button" class="btn btn-tool btn-widget-copy">
-        <i class="fas fa-copy"></i>
-      </button>
-      <button type="button" class="visibility-hidden btn btn-tool btn-widget-collapse">
-        <i class="fas fa-minus"></i>
-      </button>
-      <button type="button" class="btn btn-tool btn-widget-remove">
-        <i class="fas fa-times"></i>
-      </button>
-    </div><!-- /card-tools -->
-  </div>
-</div>
-`;
+var templates = getTemplates();
+// console.log("getTemplates()");
+// console.log(templates);
 
 
 function generatePages() {
   // delete all pages
   $("#pages .page").remove();
   $(".menu-link-page").remove();
+  $(".page-nav-item").remove();
 
   const appConfig = JSON.parse(localStorage.getItem("appConfig", "{}"));
   console.log(appConfig);
@@ -485,10 +22,13 @@ function generatePages() {
   $("#data-url-port").val(appConfig.dataprovider.url);
   $("#data-url-port").attr("value", appConfig.dataprovider.url);
 
+  // settings
+  $("#chkSplitterOpen")[0].checked = appConfig.settings.SplitterOpen;
+  $("#chkLightMode")[0].checked = !appConfig.settings.LayoutDunkel;
 
   for (var pageId in appConfig.pages) {
     var pageUUID = addPage(appConfig.pages[pageId]);
-    //console.log(appConfig.pages[pageId]);
+    console.log(appConfig.pages[pageId]);
     for (var widgetId in appConfig.pages[pageId].widgets) {
       //console.log(appConfig.pages[pageId].widgets[widgetId]);
       var widget = appConfig.pages[pageId].widgets[widgetId];
@@ -500,17 +40,51 @@ function generatePages() {
     }
 
   }
+  // delete and populate CSS
+  $("#css textarea").val("");
+  $("#css textarea").val(CSSJSON.toCSS(appConfig.css));
+
   $(".menu-link-page")
     .first()
     .click();
 }
 
+function sortPages(pages = {}) {
+
+  pages.sort(sortFunction);
+
+  function sortFunction(a, b) {
+    if (parseInt(a.order, 10) > parseInt(b.order, 10)) {
+      return 1;
+    }
+    else {
+      return -1;
+    }
+  }
+  // reorder pages
+  var i = 1;
+  for (page in pages) {
+    pages[page].order = i;
+    i++;
+  }
+  return pages;
+}
+
 function populateWidget(widgetUUID, newWidget) {
   var thisWidget = $("#" + widgetUUID);
+
+  // set titleIcon
+  $(thisWidget).find(".iconSelectTitle")
+    .val(newWidget.titleIcon)
+    .attr("data-icon", newWidget.titleIcon);
+  $(thisWidget).find(".iconSelectTitle i")
+    .removeClass()
+    .addClass("mfd-icon " + newWidget.titleIcon);
+  $(thisWidget).find("input.title").val(newWidget.title);
+  $(thisWidget).find(".settings-title").text(newWidget.title);
+
   switch (newWidget.type) {
     case "indicator":
-      $(thisWidget).find("input.title").val(newWidget.title);
-      $(thisWidget).find(".settings-title").text(newWidget.title);
       $(thisWidget).find("input.stateSelect").val(newWidget.stateId);
       $(thisWidget).find(".settings-state").text(newWidget.stateId);
       $(thisWidget).find(".settings-icon").text(newWidget.icon);
@@ -520,66 +94,129 @@ function populateWidget(widgetUUID, newWidget) {
       $(thisWidget).find(".iconSelect i")
         .removeClass()
         .addClass("mfd-icon " + newWidget.icon);
-      if (newWidget.additionalClass === "alarm") {
-        $(thisWidget).find(".showasalarm")
-          .attr("checked", "checked");
-      }
-      if (newWidget.negate === true) {
-        $(thisWidget).find(".negate")
-          .attr("checked", "checked");
-      }
+      $(thisWidget).find(".colorWhenTrue").val(newWidget.colorWhenTrue);
+      $(thisWidget).find(".colorWhenFalse").val(newWidget.colorWhenFalse);
       break;
     case "switch":
       //console.log("add switch");
-      $(thisWidget).find("input.title").val(newWidget.title);
-      $(thisWidget).find(".settings-title").text(newWidget.title);
       $(thisWidget).find("input.stateSelect").val(newWidget.stateId);
       $(thisWidget).find(".settings-state").text(newWidget.stateId);
       break;
     case "html":
       //console.log("add html");
-      $(thisWidget).find("input.title").val(newWidget.title);
-      $(thisWidget).find(".settings-title").text(newWidget.title);
       $(thisWidget).find("input.stateSelect").val(newWidget.stateId);
       $(thisWidget).find(".settings-state").text(newWidget.stateId);
+      $(thisWidget).find("input.height").val(newWidget.height);
       break;
     case "slider":
       // console.log("add slider");
       // console.log($(thisWidget));
-      $(thisWidget).find("input.title").val(newWidget.title);
-      $(thisWidget).find(".settings-title").text(newWidget.title);
       $(thisWidget).find("input.stateSelect").val(newWidget.stateId);
       $(thisWidget).find(".settings-state").text(newWidget.stateId);
       $(thisWidget).find("input.unit").val(newWidget.unit);
       $(thisWidget).find("input.minimum").val(newWidget.min);
       $(thisWidget).find("input.maximum").val(newWidget.max);
       $(thisWidget).find("input.step").val(newWidget.step);
+      $(thisWidget).find(".iconSelectMin")
+        .val(newWidget.minIcon)
+        .attr("data-icon", newWidget.minIcon);
+      $(thisWidget).find(".iconSelectMin i")
+        .removeClass()
+        .addClass("mfd-icon " + newWidget.minIcon);
+      $(thisWidget).find(".iconSelectMax")
+        .val(newWidget.maxIcon)
+        .attr("data-icon", newWidget.maxIcon);
+      $(thisWidget).find(".iconSelectMax i")
+        .removeClass()
+        .addClass("mfd-icon " + newWidget.maxIcon);
       break;
     case "output":
       //console.log("add output");
-      $(thisWidget).find("input.title").val(newWidget.title);
-      $(thisWidget).find(".settings-title").text(newWidget.title);
       $(thisWidget).find("input.stateSelect").val(newWidget.stateId);
       $(thisWidget).find(".settings-state").text(newWidget.stateId);
       $(thisWidget).find("input.unit").val(newWidget.unit);
+      $(thisWidget).find(".color").val(newWidget.color);
+      $(thisWidget).find(".format").val(newWidget.format);
+      $(thisWidget).find(".formatExample").val(numeral(1000).format(newWidget.format));
+      $(thisWidget).find(".minColor").val(newWidget.minColor);
+      $(thisWidget).find(".maxColor").val(newWidget.maxColor);
+      $(thisWidget).find(".maxValue").val(newWidget.maxValue);
+      $(thisWidget).find(".minValue").val(newWidget.minValue);
       break;
     case "iframe":
       //console.log("add iframe");
-      $(thisWidget).find("input.title").val(newWidget.title);
-      $(thisWidget).find(".settings-title").text(newWidget.title);
       $(thisWidget).find("input.url").val(newWidget.url);
       $(thisWidget).find(".settings-url").text(newWidget.url);
       $(thisWidget).find("input.updateTimeSek").val(newWidget.updateTimeSek);
       $(thisWidget).find("input.width").val(newWidget.width);
       $(thisWidget).find("input.height").val(newWidget.height);
       break;
-    case "imgoutput":
-      //console.log("add imgoutput");
-      $(thisWidget).find("input.title").val(newWidget.title);
-      $(thisWidget).find(".settings-title").text(newWidget.title);
+    case "flot":
+      //console.log("add flot");
       $(thisWidget).find("input.url").val(newWidget.url);
       $(thisWidget).find(".settings-url").text(newWidget.url);
       $(thisWidget).find("input.updateTimeSek").val(newWidget.updateTimeSek);
+      $(thisWidget).find("input.height").val(newWidget.height);
+      $(thisWidget).find(".area1Name").val(newWidget.area1Name);
+      $(thisWidget).find(".area1Time").val(newWidget.area1Time);
+      $(thisWidget).find(".area2Name").val(newWidget.area2Name);
+      $(thisWidget).find(".area2Time").val(newWidget.area2Time);
+      $(thisWidget).find(".area3Name").val(newWidget.area3Name);
+      $(thisWidget).find(".area3Time").val(newWidget.area3Time);
+      $(thisWidget).find(".area4Name").val(newWidget.area4Name);
+      $(thisWidget).find(".area4Time").val(newWidget.area4Time);
+      break;
+    case "imgoutput":
+      //console.log("add imgoutput");
+      $(thisWidget).find("input.url").val(newWidget.url);
+      $(thisWidget).find(".settings-url").text(newWidget.url);
+      $(thisWidget).find("input.updateTimeSek").val(newWidget.updateTimeSek);
+      break;
+    case "timepicker":
+      //console.log("add html");
+      $(thisWidget).find("input.stateSelect").val(newWidget.stateId);
+      $(thisWidget).find(".settings-state").text(newWidget.stateId);
+      let timepickerFormat = newWidget.format || "HH:mm";
+      $(thisWidget).find(".format").val(timepickerFormat);
+      $(thisWidget).find(".formatExample").val(moment().format(timepickerFormat));
+      break;
+    case "valueswitcher":
+      $(thisWidget).find("input.stateSelect").val(newWidget.stateId);
+      $(thisWidget).find(".settings-state").text(newWidget.stateId);
+      $(thisWidget).find("input.unit").val(newWidget.unit || "");
+
+      $(thisWidget).find(".nbOfButtons").val(newWidget.nbOfButtons || 4);
+
+      $(thisWidget).find(".iconSelectIcon1")
+        .val(newWidget.icon1)
+        .attr("data-icon", newWidget.icon1);
+      $(thisWidget).find(".iconSelectIcon1 i")
+        .removeClass()
+        .addClass("mfd-icon " + newWidget.icon1);
+      $(thisWidget).find("input.btn1Value").val(newWidget.value1);
+      $(thisWidget).find(".iconSelectIcon2")
+        .val(newWidget.icon2)
+        .attr("data-icon", newWidget.icon2);
+      $(thisWidget).find(".iconSelectIcon2 i")
+        .removeClass()
+        .addClass("mfd-icon " + newWidget.icon2);
+      $(thisWidget).find("input.btn2Value").val(newWidget.value2);
+      $(thisWidget).find(".iconSelectIcon3")
+        .val(newWidget.icon3)
+        .attr("data-icon", newWidget.icon3);
+      $(thisWidget).find(".iconSelectIcon3 i")
+        .removeClass()
+        .addClass("mfd-icon " + newWidget.icon3);
+      $(thisWidget).find("input.btn3Value").val(newWidget.value3);
+
+      $(thisWidget).find(".iconSelectIcon4")
+        .val(newWidget.icon4)
+        .attr("data-icon", newWidget.icon4);
+      $(thisWidget).find(".iconSelectIcon4 i")
+        .removeClass()
+        .addClass("mfd-icon " + newWidget.icon4);
+      $(thisWidget).find("input.btn4Value").val(newWidget.value4);
+      valueSwitcherSelectChange($("#" + widgetUUID + " .nbOfButtons"), newWidget.nbOfButtons);
       break;
     default:
       // no more settings
@@ -593,8 +230,8 @@ function generateConfig(saveInFile = true) {
   newConfig.timestamp = moment();
 
   newConfig.settings = {};
-  newConfig.settings.LayoutDunkel = true;
-  newConfig.settings.SplitterOpen = true;
+  newConfig.settings.LayoutDunkel = !$("#chkLightMode")[0].checked;
+  newConfig.settings.SplitterOpen = $("#chkSplitterOpen")[0].checked;
 
   newConfig.dataprovider = {};
   newConfig.dataprovider.type = "iobroker";
@@ -610,73 +247,113 @@ function generateConfig(saveInFile = true) {
 
   newConfig.pages = [];
 
-
+  pageOrderNb = 1;
   $("#pages .page").each(function () {
     var newPage = {};
     newPage.UUID = $(this).attr("id");
     newPage.title = $(this).find(".page-title").val();
+    newPage.icon = $(this).find(".iconSelectPage").attr("data-icon");
     newPage.startpage = false;
     if ($(this).find(".isstartpage").get([0]).checked === true) {
       newPage.startpage = true;
     }
+    // pageOrder
+    pageOrder = $(this).find("input.page-order").val();
+    if (pageOrder < 1 || pageOrder > 99) {
+      pageOrder = pageOrderNb;
+    }
+    newPage.order = pageOrder;
+    pageOrderNb++;
+
     // read widgets
     newPage.widgets = [];
     $(this).find(".widget-holder .widget").each(function () {
       newWidget = {};
       newWidget.UUID = $(this).attr("id");
       newWidget.type = $(this).data("widgettype");
+      newWidget.titleIcon = $(this).find(".iconSelectTitle").attr("data-icon");
+      newWidget.title = $(this).find("input.title").val() || "NONE";
       switch (newWidget.type) {
         case "indicator":
-          newWidget.title = $(this).find("input.title").val() || "NONE";
           newWidget.stateId = $(this).find("input.stateSelect").val() || "dummy.state";
           newWidget.icon = $(this).find(".iconSelect").attr("data-icon");
-          newWidget.negate = false;
-          if ($(this).find("input.negate").get([0]).checked === true) {
-            newWidget.negate = true;
-          }
-          newWidget.additionalClass = "";
-          if ($(this).find("input.showasalarm").get([0]).checked === true) {
-            newWidget.additionalClass = "alarm"
-          }
+          newWidget.colorWhenTrue = $(this).find(".colorWhenTrue").val() || "#00FF00";
+          newWidget.colorWhenFalse = $(this).find(".colorWhenFalse").val() || "#FF0000";
           break;
         case "switch":
           //console.log("add switch");
-          newWidget.title = $(this).find("input.title").val() || "NONE";
           newWidget.stateId = $(this).find("input.stateSelect").val() || "dummy.state";
           break;
         case "html":
           //console.log("add html");
-          newWidget.title = $(this).find("input.title").val() || "NONE";
           newWidget.stateId = $(this).find("input.stateSelect").val() || "dummy.state";
+          newWidget.height = $(this).find("input.height").val() || "299px"; 
           break;
         case "slider":
           //console.log("add slider");
-          newWidget.title = $(this).find("input.title").val() || "NONE";
           newWidget.stateId = $(this).find("input.stateSelect").val() || "dummy.state";
           newWidget.unit = $(this).find("input.unit").val();
           newWidget.min = parseInt($(this).find("input.minimum").val(), 10) || 0;
           newWidget.max = parseInt($(this).find("input.maximum").val(), 10) || 100;
           newWidget.step = parseInt($(this).find("input.step").val(), 10) || 5;
+          newWidget.minIcon = $(this).find(".iconSelectMin").attr("data-icon") || "text_min";
+          newWidget.maxIcon = $(this).find(".iconSelectMax").attr("data-icon") || "text_max";
           break;
         case "output":
           //console.log("add output");
-          newWidget.title = $(this).find("input.title").val() || "NONE";
           newWidget.stateId = $(this).find("input.stateSelect").val() || "dummy.state";
           newWidget.unit = $(this).find("input.unit").val();
+          newWidget.format = $(this).find(".format").val() || "0";
+          newWidget.color = $(this).find(".color").val() || "#FFFFFF";
+          newWidget.maxColor = $(this).find(".maxColor").val() || "#FF0000";
+          newWidget.minColor = $(this).find(".minColor").val() || "#0000FF";
+          newWidget.maxValue = parseFloat($(this).find(".maxValue").val()) || 90.0;
+          newWidget.minValue = parseFloat($(this).find(".minValue").val()) || 10.0;
           break;
         case "iframe":
           //console.log("add iframe");
-          newWidget.title = $(this).find("input.title").val() || "NONE";
           newWidget.url = $(this).find("input.url").val();
           newWidget.updateTimeSek = parseInt($(this).find("input.updateTimeSek").val(), 10) || 599;
           newWidget.width = $(this).find("input.width").val();
           newWidget.height = $(this).find("input.height").val();
           break;
-        case "imgoutput":
-          //console.log("add imgoutput");
-          newWidget.title = $(this).find("input.title").val() || "NONE";
+        case "flot":
+          //console.log("add flot");
           newWidget.url = $(this).find("input.url").val();
           newWidget.updateTimeSek = parseInt($(this).find("input.updateTimeSek").val(), 10) || 599;
+          newWidget.height = $(this).find("input.height").val();
+          newWidget.area1Name = $(this).find(".area1Name").val() || "hour";
+          newWidget.area1Time = parseInt($(this).find(".area1Time").val(), 10) || 60;
+          newWidget.area2Name = $(this).find(".area2Name").val() || "day";
+          newWidget.area2Time = parseInt($(this).find(".area2Time").val(), 10) || 1440;
+          newWidget.area3Name = $(this).find(".area3Name").val() || "week";
+          newWidget.area3Time = parseInt($(this).find(".area3Time").val(), 10) || 10080;
+          newWidget.area4Name = $(this).find(".area4Name").val() || "month";
+          newWidget.area4Time = parseInt($(this).find(".area4Time").val(), 10) || 302400;
+          break;
+        case "imgoutput":
+          //console.log("add imgoutput");
+          newWidget.url = $(this).find("input.url").val();
+          newWidget.updateTimeSek = parseInt($(this).find("input.updateTimeSek").val(), 10) || 599;
+          break;
+        case "timepicker":
+          //console.log("add timepicker");
+          newWidget.stateId = $(this).find("input.stateSelect").val() || "dummy.state";
+          newWidget.format = $(this).find(".format").val() || "HH:mm";
+          break;
+        case "valueswitcher":
+          //console.log("add valueswitcher");
+          newWidget.stateId = $(this).find("input.stateSelect").val() || "dummy.state";
+          newWidget.unit = $(this).find("input.unit").val();
+          newWidget.nbOfButtons = $(this).find(".nbOfButtons").val() || 4;
+          newWidget.icon1 = $(this).find(".iconSelectIcon1").attr("data-icon") || "fts_garage_door_10";
+          newWidget.icon2 = $(this).find(".iconSelectIcon2").attr("data-icon") || "fts_garage_door_30";
+          newWidget.icon3 = $(this).find(".iconSelectIcon3").attr("data-icon") || "fts_garage_door_60";
+          newWidget.icon4 = $(this).find(".iconSelectIcon4").attr("data-icon") || "fts_garage_door_100";
+          newWidget.value1 = $(this).find(".btn1Value").val() || 1;
+          newWidget.value2 = $(this).find(".btn2Value").val() || 33;
+          newWidget.value3 = $(this).find(".btn3Value").val() || 66;
+          newWidget.value4 = $(this).find(".btn4Value").val() || 99;
           break;
         default:
           // no more settings
@@ -689,6 +366,14 @@ function generateConfig(saveInFile = true) {
     newConfig.pages.push(newPage);
   });
 
+  // sort page in config by page.order
+
+  sortedPages = sortPages(newConfig.pages);
+  // console.log(sortedPages);
+
+
+  //get global CSS for HTML Widgets
+  newConfig.css = CSSJSON.toJSON($("#css textarea").val());
 
   newConfig.alarmpage = false;
   //console.log(newConfig);
@@ -736,9 +421,12 @@ function generateConfig(saveInFile = true) {
 }
 
 function addPage(pageData = {}) {
+  console.log("addpage with " + pageData.UUID);
   var uuid = pageData.UUID || UUID();
   var pageTitle = pageData.title || "PageName";
   var pageIsStartpage = pageData.startpage || false;
+  var pageIcon = pageData.icon || "audio_play";
+  var pageOrder = pageData.order || ($(".page").length + 1);
 
   var newPage = $(templates.page)
     .clone()
@@ -747,11 +435,36 @@ function addPage(pageData = {}) {
   $(newPage)
     .find("input.page-title")
     .attr("value", pageTitle);
+
+  $(newPage).find(".iconSelectPage")
+    .val(pageIcon)
+    .attr("data-icon", pageIcon);
+  $(newPage).find(".iconSelectPage i")
+    .removeClass()
+    .addClass("mfd-icon " + pageIcon);
+
   if (pageIsStartpage) {
     $(newPage)
       .find(".isstartpage")
       .attr("checked", "checked");
   }
+  $(newPage)
+    .find("input.page-order")
+    .attr("value", pageOrder);
+  $(newPage)
+    .find("input.page-order")
+    .change(function () {
+      $(".btn-apply-page-order").removeClass("hidden");
+    }
+    );
+  $(newPage)
+    .find(".btn-apply-page-order")
+    .click(function () {
+      console.log("Apply page Order");
+      generateConfig(false);
+      generatePages();
+    }
+    );
   $(newPage)
     .find("input.page-title")
     .focus(function () {
@@ -761,7 +474,7 @@ function addPage(pageData = {}) {
       e.preventDefault();
     })
     .keyup(function () {
-      $('a[href="#' + uuid + '"] p .page-title').text($(this).val());
+      $('a[href="#' + uuid + '"] .page-title').text($(this).val());
       //console.log($(this).val());
     });
 
@@ -773,6 +486,8 @@ function addPage(pageData = {}) {
       .parent()
       .attr("id");
     $(".nav-link[href='#" + uuid + "'")
+      .parent()
+      .parent()
       .parent()
       .remove();
     $(this)
@@ -805,18 +520,36 @@ function addPage(pageData = {}) {
   $(".page-nav-item.active").removeClass("active");
   // now add page-tab
   var newPageTab = $(templates.pageTab);
-  //console.log(newPageTab);
+  console.log("New pageTab with " + uuid);
   $(newPageTab)
     .attr("data-id", uuid)
     .find("a")
     .attr("href", "#" + uuid);
   //.addClass("active");
   $(newPageTab)
+    .find(".page-order")
+    .text(pageOrder);
+  $(newPageTab)
     .find("a")
     .click(function () {
+      $("#css").hide();
       $(".page").hide();
       $("#" + uuid).show(100);
     });
+
+  $(newPageTab)
+    .find("a")
+    .click(function () {
+      $("#css").hide();
+      $(".page").hide();
+      $("#" + uuid).show(100);
+    });
+
+  $(newPageTab).find(".mfd-icon")
+    .removeClass()
+    .addClass("mfd-icon nav-icon " + pageIcon);
+
+
   if (pageIsStartpage) {
     $(newPageTab)
       .find(".nav-startpage-icon")
@@ -824,7 +557,7 @@ function addPage(pageData = {}) {
   }
 
   $(newPageTab)
-    .find("p .page-title")
+    .find(".page-title")
     .text(pageTitle);
   $(newPageTab).insertBefore("#pages-nav-item-end");
   $(".page").hide();
@@ -851,12 +584,13 @@ function renamePages() {
   var pageNumber = 1;
   $("#pages .page").each(function () {
     var uuid = $(this).attr("id");
-    var pageNumberText = "Page " + pageNumber;
+    var pageNumberText = "Page" // now page.order + pageNumber;
+    //var pageNumberText = pageNumber;
     $(this)
       .find(".label-page-name")
       .text(pageNumberText);
     //console.log("Page "+ pageNumber);
-    $('a[href="#' + uuid + '"] p .page-number').text(pageNumberText);
+    $('a[href="#' + uuid + '"]').parent().parent().find(".page-number").val(pageNumber);
     pageNumber++;
   });
   var nbOfPages = $("#pages .label-page-name").length;
@@ -989,35 +723,38 @@ function init_sortable() {
     });
   });
 }
-function init_download() {
-  $("#btn-dl-config").click(function () {
-    console.log("Handler for download config called.");
 
-    generateConfig();
+// not available at the moment
+//
+// function init_download() {
+// $("#btn-dl-config").click(function () {
+// console.log("Handler for download config called.");
 
-    var appConfig = localStorage.getItem("appConfig", "no config found");
+// generateConfig();
 
-    appConfig = templates.configJSprePend + "\n" + appConfig;
-    appConfig = appConfig + "\n" + templates.configJSpostPend;
+// var appConfig = localStorage.getItem("appConfig", "no config found");
 
-    var uuid = UUID();
-    var element = $("<a></a>");
+// appConfig = templates.configJSprePend + "\n" + appConfig;
+// appConfig = appConfig + "\n" + templates.configJSpostPend;
 
-    element.attr("id", uuid);
-    element.attr("href", "data:text/plain;charset=utf-8," + appConfig);
-    element.attr("download", "config.js");
+// var uuid = UUID();
+// var element = $("<a></a>");
 
-    element.hide();
+// element.attr("id", uuid);
+// element.attr("href", "data:text/plain;charset=utf-8," + appConfig);
+// element.attr("download", "config.js");
 
-    $("body").prepend(element);
-    //$("#" + uuid).css("height","100px").css("display","block");
-    console.log(element);
-    $("#" + uuid)
-      .get(0)
-      .click();
-    $("#" + uuid).remove();
-  });
-}
+// element.hide();
+
+// $("body").prepend(element);
+// //$("#" + uuid).css("height","100px").css("display","block");
+// console.log(element);
+// $("#" + uuid)
+// .get(0)
+// .click();
+// $("#" + uuid).remove();
+// });
+// }
 
 function connect_socket() {
   //console.log("Socket init");
@@ -1055,8 +792,14 @@ function connect_socket() {
       .removeClass("alert-info")
       .addClass("alert-success");
     show_message("sucessfully connected", "success");
-    readVariables();
-    readConfigFiles()
+    setTimeout(function () {
+      readVariables();
+    }, 1000);
+    setTimeout(function () {
+      readConfigFiles();
+    }, 2000);
+    //readVariables();
+    //readConfigFiles()
   });
   socket.on("connect_error", function () {
     console.log("Connection failed");
@@ -1245,6 +988,7 @@ function init_modal() {
       .removeClass("iconSelect stateSelect iconFaSelect")
       .addClass(modalClass);
     //$(this).data("widget", button.closest('.widget').data('id'));
+    $(this).attr("data-widget", button.closest(".page").attr("id"));
     $(this).attr("data-widget", button.closest(".widget").attr("id"));
     $(this).attr("data-class", modalClass);
 
@@ -1282,7 +1026,7 @@ function init_modal() {
     }
     if (modalClass.indexOf("conSe") > 0) {
       $(this)
-        .find("div.icon-select")
+        .find("div.mfd-icon-select")
         .show();
     }
     //$('#mfd-iconselect-dropdown.dropdown').dropdown("hide");
@@ -1330,6 +1074,7 @@ function submit_modal() {
       .not(".tt-hint")
       .val();
   } else if (modalClass.indexOf("aIconSel") > 0) {
+    // no fa-icon support
     // submit fa-icon
     // value = $("#selectModal button .icon-name").text();
     // console.log(value);
@@ -1340,7 +1085,18 @@ function submit_modal() {
     //   .addClass("mfd-icon " + value);
   } else if (modalClass.indexOf("conSelect") > 0) {
     // submit mfd-icon
-    value = $("#mfd-iconselect-dropdown .icon-holder i").attr("data-iconvalue");
+    //value = $("#mfd-iconselect-dropdown .icon-holder i").attr("data-iconvalue");
+
+    var iconClasses = $("#icp-mfd").attr("data-iconvalue");
+    console.log(iconClasses);
+
+    value = "audio_audio";
+    if (iconClasses !== undefined) {
+      value = iconClasses.split(" ");
+      value = value[1];
+    }
+
+
     console.log("from modal:");
     console.log(value);
     $("#" + widgetId + " ." + modalClass)
@@ -1349,6 +1105,12 @@ function submit_modal() {
       .find("i")
       .removeClass()
       .addClass("mfd-icon " + value);
+    // nav-iocn left sidebar
+    $(".nav-item[data-id='" + widgetId + "']")
+      .find("i.mfd-icon")
+      .removeClass()
+      .addClass("mfd-icon nav-icon " + value);
+
   }
 
   $("#" + widgetId + " ." + modalClass).attr("value", value);
@@ -1369,11 +1131,26 @@ function removeFileExtension(fileName) {
 function init() {
   console.log("App init");
 
+  // check if develpoment mode
+  // console.log(window.location.host);
+  // console.log(window.location.host.indexOf("dev"));
+  if (window.location.host.indexOf("dev") == 0) {
+    $("body").addClass("is-development");
+    $("body").prepend(templates.devNote);
+  }
+
   $(".nav-item a.menu-link-page").on("click", function (e) {
     e.preventDefault();
+    $("#css").hide();
     $(".page").hide();
     $($(this).attr("href")).show();
     //console.log($(this).attr("href"));
+  });
+
+  $("#css-nav-item a").on("click", function (e) {
+    e.preventDefault();
+    $(".page").hide();
+    $("#css").show();
   });
 
   $(document).ready(function () {
@@ -1412,7 +1189,8 @@ function init() {
       deleteConfigFile($("#select-configfile").val() + ".json");
     });
 
-    init_download();
+    // not working at the moment
+    //init_download();
 
     // try to read variables
     variables = JSON.parse(localStorage.getItem("variables") || null);
@@ -1450,27 +1228,63 @@ function init() {
       $("#configShowModal").modal("show");
     });
 
-    // $("#btn-widgets-show-all").click(function (event) {
-    //   event.preventDefault();
-    //   $(".btn-widget-collapse").closest(".widget").find(".card-body").show();
-    // });
-
-
-    // $("#btn-widgets-collapse-all").click(function (event) {
-    //   event.preventDefault();
-    //   $(".btn-widget-collapse").closest(".widget").find(".card-body").hide();
-    // });
+    $("#btn-widgets-collapse-all").click(function (event) {
+      event.preventDefault();
+      $(".widget").find(".card-body").toggle();
+    });
 
     addPage();
     // if config then generate Pages
     generatePages();
 
   });
+
+  // init mfd-Icon-Dropdown
+  console.log("Init MFD-Icons-Dropdown");
+  //console.log(getMfdIcons());
+  $("#icp-mfd").iconpicker({
+    title: 'Select MFD Icon',
+    icons: getMfdIcons(),
+    selectedCustomClass: 'bg-secondary',
+  });
+
+  // Bind iconpicker events to the element
+  $("#icp-mfd").on('iconpickerSelected', function (event) {
+    /* event.iconpickerValue */
+    console.log("#icp-mfd data: " + event.iconpickerValue);
+    $("#icp-mfd").attr("data-iconvalue", event.iconpickerValue)
+  });
+
 }
 
 init();
 
 //////////////// helper functions
+
+function valueSwitcherSelectChange(selectObj, value = 0) {
+  console.log("valueSwitcherSelectChange");
+  console.log(selectObj);
+  widgetUUID = $(selectObj).closest(".widget").attr("id");
+  console.log(widgetUUID);
+
+  if (value == 0) {
+    value = parseInt(selectObj.value, 10);
+  }
+
+  $("#" + widgetUUID + " .button2").hide();
+  $("#" + widgetUUID + " .button3").hide();
+  $("#" + widgetUUID + " .button4").hide();
+  if (value > 1) {
+    $("#" + widgetUUID + " .button2").show();
+  }
+  if (value > 2) {
+    $("#" + widgetUUID + " .button3").show();
+  }
+  if (value > 3) {
+    $("#" + widgetUUID + " .button4").show();
+  }
+}
+
 
 function sanitize(input) {
 
@@ -1492,4 +1306,18 @@ function sanitize(input) {
     .replace(windowsReservedRe, replacement)
     .replace(windowsTrailingRe, replacement);
   return sanitized;
+}
+
+function validateTimePickerFormat(elem) {
+  console.log("validateTimePickerFormat");
+  let format = $(elem).val();
+  let formatExample = moment().format(format);
+  $(elem).parent().parent().parent().find(".formatExample").val(formatExample);
+}
+
+function validateNumeralFormat(elem) {
+  console.log("validateNumeralFormat");
+  let format = $(elem).val();
+  let formatExample = numeral(1000).format(format);
+  $(elem).parent().parent().parent().find(".formatExample").val(formatExample);
 }

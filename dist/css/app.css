@@ -1,3 +1,22 @@
+/* development ? */
+body.is-development {
+  margin-top:30px;
+}
+
+#dev-note {
+  padding: 3px;
+  background-color: lightPink;
+  font-size: 15px;
+  font-weight: bold;
+  font-family: Arial;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999999;
+  height: 30px;
+  width: 100%;
+}	
+
 /* minukodu hiiden-class */
 .mk-hidden,
 .hidden {
@@ -11,11 +30,41 @@ html {
   overflow-y:scroll;
 }
 
+#css {
+  display: none;
+}
+
+input.colorinput {
+  width: 4em !important; 
+}
+
 /* no border-radius */
 .nav-pills .nav-link {
   border-radius: 0;
   font-size: 0.875rem;
 }
+
+.nav-icon.mfd-icon {
+	height: 32px;
+	width: 32px;
+	background-color: #fff;
+	display: inline-block;
+}
+
+.nav-item {
+  height: 40px;
+}
+
+.nav-item.settings {
+  color: #fff;
+  padding-left: 2em;
+  border-bottom: 1px dotted #fff;
+}
+
+#spliiterOpen-nav-item {
+  border-top: 1px dotted #fff;
+}
+
 .form-check-label {
   font-size: 0.875rem;
 }
@@ -80,16 +129,37 @@ html {
   width: 30%;
 }
 
+.widget .title{
+  width: 30em;
+}
+
+.widget.flot .input-group-prepend span,
 .widget.iframe .input-group-prepend span,
 .widget.slider .input-group-prepend span,
 .widget.imgoutput .input-group-prepend span{
   width: 14em;
 }
 
+.input-group-prepend mark{
+  padding: 0 1em;
+}
+
+.widget.flot .form-inline .input-group-prepend span {
+  width: auto;
+}
+
 .icon-select .icon-holder{
   border: 1px solid #545b62;
-
 }
+
+.iconselectfromcontrol span.input-group-text{
+  padding: 0;
+}
+
+.icon-select span.input-group-text{
+  padding: 0;
+}
+
 .icon-select .mfd-icon,
 .widget .mfd-icon {
   width: 40px;
