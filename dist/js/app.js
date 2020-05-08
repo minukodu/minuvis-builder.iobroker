@@ -17,7 +17,6 @@ var templates = getTemplates();
 // console.log("getTemplates()");
 // console.log(templates);
 
-
 function generatePages() {
   // delete all pages
   $("#pages .page").remove();
