@@ -1,7 +1,7 @@
 // App
 
 //////////////////////
-var version = "1.0.1";
+var version = "1.0.3";
 //////////////////////
 
 var appPath = "minuvis/app/";
@@ -16,7 +16,6 @@ var filePath = "minukodu";
 var templates = getTemplates();
 // console.log("getTemplates()");
 // console.log(templates);
-
 
 function generatePages() {
   // delete all pages
@@ -62,9 +61,15 @@ function generatePages() {
     $("#css textarea").val(CSSJSON.toCSS(appConfig.css));
   }
 
-  $(".menu-link-page")
-    .first()
-    .click();
+  firstPageUUID = $(".menu-link-page").first().attr("href");
+  //console.log("FirstPageUUID: " + firstPageUUID);
+  showPage(firstPageUUID);
+}
+
+function showPage(UUID) {
+  $("#css").hide();
+  $(".page").hide();
+  $(UUID).show();
 }
 
 function sortPages(pages = {}) {
@@ -1283,16 +1288,16 @@ function showPreviewQrCode(url) {
 
 function init() {
   console.log("App init");
-  // version
-  $("#versionnumber").text("Version " + version);
-
   // check if develpoment mode
   // console.log(window.location.host);
   // console.log(window.location.host.indexOf("dev"));
   if (window.location.host.indexOf("dev") == 0) {
     $("body").addClass("is-development");
     $("body").prepend(templates.devNote);
+    version = version + "-dev";
   }
+  // version
+  $("#versionnumber").text("Version " + version);
 
   // assume same url and port
   $("#data-url-port").val(window.location.protocol + "//" + window.location.host);
@@ -1332,19 +1337,32 @@ function init() {
 
     });
 
-    $("#btn-save-file").on("click", function () {
+    $("#btn-save-file").on("click", function (event) {
+      event.preventDefault();
       console.log("Save config in file");
       generateConfig();
     });
 
-    $("#btn-load-file").on("click", function () {
+    $("#btn-load-file").on("click", function (event) {
+      event.preventDefault();
       console.log("load config from file");
       readConfigFromFile($("#select-configfile").val() + ".json");
     });
 
-    $("#btn-delete-file").on("click", function () {
+    $("#btn-delete-file").on("click", function (event) {
+      event.preventDefault();
       console.log("delete config-file");
       deleteConfigFile($("#select-configfile").val() + ".json");
+    });
+
+
+    $("#btn-cache-clear-all").on("click", function (event) {
+      event.preventDefault();
+      let clearCacheConfirmation = confirm("This will delete all your not saved configuration !\n\nis this ok ?")
+      if (clearCacheConfirmation === true) {
+        console.log("confirmed clear browser cache");
+        clearBrowserCache();
+      }
     });
 
     // not working at the moment
@@ -1426,6 +1444,11 @@ function init() {
 init();
 
 //////////////// helper functions
+
+function clearBrowserCache() {
+  localStorage.clear();
+  location.replace(location.href)
+}
 
 function valueSwitcherSelectChange(selectObj, value = 0) {
   console.log("valueSwitcherSelectChange");
