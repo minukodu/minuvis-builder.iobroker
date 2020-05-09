@@ -61,9 +61,15 @@ function generatePages() {
     $("#css textarea").val(CSSJSON.toCSS(appConfig.css));
   }
 
-  $(".menu-link-page")
-    .first()
-    .click();
+  firstPageUUID = $(".menu-link-page").first().attr("href");
+  //console.log("FirstPageUUID: " + firstPageUUID);
+  showPage(firstPageUUID);
+}
+
+function showPage(UUID) {
+  $("#css").hide();
+  $(".page").hide();
+  $(UUID).show();
 }
 
 function sortPages(pages = {}) {
@@ -1282,16 +1288,16 @@ function showPreviewQrCode(url) {
 
 function init() {
   console.log("App init");
-  // version
-  $("#versionnumber").text("Version " + version);
-
   // check if develpoment mode
   // console.log(window.location.host);
   // console.log(window.location.host.indexOf("dev"));
   if (window.location.host.indexOf("dev") == 0) {
     $("body").addClass("is-development");
     $("body").prepend(templates.devNote);
+    version = version + "-dev";
   }
+  // version
+  $("#versionnumber").text("Version " + version);
 
   // assume same url and port
   $("#data-url-port").val(window.location.protocol + "//" + window.location.host);
@@ -1331,17 +1337,20 @@ function init() {
 
     });
 
-    $("#btn-save-file").on("click", function () {
+    $("#btn-save-file").on("click", function (event) {
+      event.preventDefault();
       console.log("Save config in file");
       generateConfig();
     });
 
-    $("#btn-load-file").on("click", function () {
+    $("#btn-load-file").on("click", function (event) {
+      event.preventDefault();
       console.log("load config from file");
       readConfigFromFile($("#select-configfile").val() + ".json");
     });
 
-    $("#btn-delete-file").on("click", function () {
+    $("#btn-delete-file").on("click", function (event) {
+      event.preventDefault();
       console.log("delete config-file");
       deleteConfigFile($("#select-configfile").val() + ".json");
     });
