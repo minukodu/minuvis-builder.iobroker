@@ -1,7 +1,7 @@
 // App
 
 //////////////////////
-var version = "1.0.2";
+var version = "1.0.3";
 //////////////////////
 
 var appPath = "minuvis/app/";
@@ -1355,6 +1355,16 @@ function init() {
       deleteConfigFile($("#select-configfile").val() + ".json");
     });
 
+
+    $("#btn-cache-clear-all").on("click", function (event) {
+      event.preventDefault();
+      let clearCacheConfirmation = confirm("This will delete all your not saved configuration !\n\nis this ok ?")
+      if (clearCacheConfirmation === true) {
+        console.log("confirmed clear browser cache");
+        clearBrowserCache();
+      }
+    });
+
     // not working at the moment
     //init_download();
 
@@ -1434,6 +1444,11 @@ function init() {
 init();
 
 //////////////// helper functions
+
+function clearBrowserCache() {
+  localStorage.clear();
+  location.replace(location.href)
+}
 
 function valueSwitcherSelectChange(selectObj, value = 0) {
   console.log("valueSwitcherSelectChange");
