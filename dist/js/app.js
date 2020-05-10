@@ -1,7 +1,7 @@
 // App
 
 //////////////////////
-var version = "1.0.3";
+var version = "1.0.4";
 //////////////////////
 
 var appPath = "minuvis/app/";
@@ -309,6 +309,7 @@ function generateConfig(saveInFile = true) {
       switch (newWidget.type) {
         case "indicator":
           newWidget.stateId = $(this).find("input.stateSelect").val() || "dummy.state";
+          newWidget.stateIdType = getStateType(newWidget.stateId);
           newWidget.icon = $(this).find(".iconSelect").attr("data-icon");
           newWidget.colorWhenTrue = $(this).find(".colorWhenTrue").val() || "#00FF00";
           newWidget.colorWhenFalse = $(this).find(".colorWhenFalse").val() || "#FF0000";
@@ -316,15 +317,18 @@ function generateConfig(saveInFile = true) {
         case "switch":
           //console.log("add switch");
           newWidget.stateId = $(this).find("input.stateSelect").val() || "dummy.state";
+          newWidget.stateIdType = getStateType(newWidget.stateId);
           break;
         case "html":
           //console.log("add html");
           newWidget.stateId = $(this).find("input.stateSelect").val() || "dummy.state";
+          newWidget.stateIdType = getStateType(newWidget.stateId);
           newWidget.height = $(this).find("input.height").val() || "299px";
           break;
         case "slider":
           //console.log("add slider");
           newWidget.stateId = $(this).find("input.stateSelect").val() || "dummy.state";
+          newWidget.stateIdType = getStateType(newWidget.stateId);
           newWidget.unit = $(this).find("input.unit").val();
           newWidget.min = parseInt($(this).find("input.minimum").val(), 10) || 0;
           newWidget.max = parseInt($(this).find("input.maximum").val(), 10) || 100;
@@ -335,6 +339,7 @@ function generateConfig(saveInFile = true) {
         case "output":
           //console.log("add output");
           newWidget.stateId = $(this).find("input.stateSelect").val() || "dummy.state";
+          newWidget.stateIdType = getStateType(newWidget.stateId);
           newWidget.unit = $(this).find("input.unit").val();
           newWidget.format = $(this).find(".format").val() || "0";
           newWidget.color = $(this).find(".color").val() || "#FFFFFF";
@@ -372,11 +377,13 @@ function generateConfig(saveInFile = true) {
         case "timepicker":
           //console.log("add timepicker");
           newWidget.stateId = $(this).find("input.stateSelect").val() || "dummy.state";
+          newWidget.stateIdType = getStateType(newWidget.stateId);
           newWidget.format = $(this).find(".format").val() || "HH:mm";
           break;
         case "valueswitcher":
           //console.log("add valueswitcher");
           newWidget.stateId = $(this).find("input.stateSelect").val() || "dummy.state";
+          newWidget.stateIdType = getStateType(newWidget.stateId);
           newWidget.unit = $(this).find("input.unit").val();
           newWidget.nbOfButtons = $(this).find(".nbOfButtons").val() || 4;
           newWidget.icon1 = $(this).find(".iconSelectIcon1").attr("data-icon") || "fts_garage_door_10";
@@ -391,6 +398,7 @@ function generateConfig(saveInFile = true) {
         case "timeswitch":
           //console.log("add timewitch");
           newWidget.stateId = $(this).find("input.stateSelect").val() || "dummy.state";
+          newWidget.stateIdType = getStateType(newWidget.stateId);
           newWidget.triggers = {};
           newWidget.triggers.type = $(this).find(".timeSwitchType").val() || "TimeTrigger";
           newWidget.action = {};
@@ -1448,6 +1456,23 @@ init();
 function clearBrowserCache() {
   localStorage.clear();
   location.replace(location.href)
+}
+
+function getStateType(stateId) {
+  // console.log("getStateType");
+  // console.log(stateId);
+
+  let type = "undefined";
+  let arrFllterResult = arrStates.filter(function (el) {
+    return el._id === stateId;
+  });
+
+  // console.log("arrFllterResult:");
+  // console.log(arrFllterResult);
+  try {
+    type = arrFllterResult[0].common.type;
+  } catch (e) { }
+  return type;
 }
 
 function valueSwitcherSelectChange(selectObj, value = 0) {
