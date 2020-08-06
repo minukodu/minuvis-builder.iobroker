@@ -9,7 +9,7 @@ Big thanks to authors for this icon set.
 
 ## Changelog
 
-### V1.3.0(01.06.2020)
+### V1.3.0(06.08.2020)
 Added "readOnly" to valueswitcher-Widget
 
 ### V1.2.0(01.06.2020)
