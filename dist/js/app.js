@@ -1,7 +1,7 @@
 // App
 
 //////////////////////
-var version = "1.2.0";
+var version = "1.3.0";
 //////////////////////
 
 var appPath = "minuvis/app/";
@@ -16,6 +16,8 @@ var filePath = "minukodu";
 var templates = getTemplates();
 // console.log("getTemplates()");
 // console.log(templates);
+
+numeral.locale('de');
 
 function generatePages() {
   // delete all pages
@@ -207,8 +209,14 @@ function populateWidget(widgetUUID, newWidget) {
       $(thisWidget).find("input.stateSelect").val(newWidget.stateId);
       $(thisWidget).find(".settings-state").text(newWidget.stateId);
       $(thisWidget).find("input.unit").val(newWidget.unit || "");
+      if (newWidget.hideValue) {
+        $(thisWidget).find(".hideValue").attr("checked", "checked");
+      }
       if (newWidget.hideText) {
         $(thisWidget).find(".hideText").attr("checked", "checked");
+      }
+      if (newWidget.readOnly) {
+        $(thisWidget).find(".readOnly").attr("checked", "checked");
       }
 
       $(thisWidget).find(".nbOfButtons").val(newWidget.nbOfButtons || 4);
@@ -393,9 +401,17 @@ function generateConfig(saveInFile = true) {
           newWidget.stateId = $(this).find("input.stateSelect").val() || "dummy.state";
           newWidget.stateIdType = getStateType(newWidget.stateId);
           newWidget.unit = $(this).find("input.unit").val();
+          newWidget.hideValue = false;
+          if ($(this).find(".hideValue").get([0]).checked === true) {
+            newWidget.hideValue = true;
+          }
           newWidget.hideText = false;
           if ($(this).find(".hideText").get([0]).checked === true) {
             newWidget.hideText = true;
+          }
+          newWidget.readOnly = false;
+          if ($(this).find(".readOnly").get([0]).checked === true) {
+            newWidget.readOnly = true;
           }
           newWidget.nbOfButtons = $(this).find(".nbOfButtons").val() || 4;
           newWidget.icon1 = $(this).find(".iconSelectIcon1").attr("data-icon") || "fts_garage_door_10";
