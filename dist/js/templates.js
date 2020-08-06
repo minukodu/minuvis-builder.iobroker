@@ -982,6 +982,14 @@ function getTemplates () {
                 </form>
                 <hr />
             </div>
+            <!-- hideValue -->
+            <div class="form-check ml-2 mb-3">
+                <input class="form-check-input hideValue" type="checkbox">
+                <label class="form-check-label">
+                    hide value in title line 
+                </label>
+            </div>
+            <!-- /hideValue -->
             <!-- /titleIcon, title -->
             <label>Number of buttons</label>
 
@@ -1007,6 +1015,14 @@ function getTemplates () {
                         </label>
                     </div>
                 <!-- /hideText -->
+                <!-- ReadOnly -->
+                <div class="form-check ml-2">
+                    <input class="form-check-input readOnly" type="checkbox">
+                    <label class="form-check-label">
+                        ReadOnly (no Action on ButtonPress)
+                    </label>
+                </div>
+                <!-- /ReadOnly -->
             </form>
             <hr/>
             <!-- icon, value 4 times-->
