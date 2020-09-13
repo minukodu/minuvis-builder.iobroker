@@ -12,22 +12,23 @@ Big thanks to authors for these icon sets.
 ## Changelog
 
 ### V1.4.0(13.09.2020)
-added "read-only" for valueswitcher-Widget
-added "show as indicator" with different colors for valueswitcher-Widget
-added "hightlightExactValueOnly" with different colors for valueswitcher-Widget
-added MaterialDesign-Icons
-added title-text to compactMode-Wrapper
-added title and icon for Filler-Widget
-added "show as small header" for Filler-Widget
-new design
+* added "read-only" for valueswitcher-Widget
+* added "show as indicator" with different colors for valueswitcher-Widget
+* added "hightlightExactValueOnly" with different colors for valueswitcher-Widget
+* added MaterialDesign-Icons
+* added title-text to compactMode-Wrapper
+* added title and icon for Filler-Widget
+* added "show as small header" for Filler-Widget
+* new design
+* new widget-template-system
 
 ### V1.3.0(06.08.2020)
-Added "readOnly" to valueswitcher-Widget
+* added "readOnly" to valueswitcher-Widget
 
 ### V1.2.0(01.06.2020)
-Added "hide Text" to valueswitcher-Widget
+* added "hide Text" to valueswitcher-Widget
 
 ### V1.1.0(29.05.2020)
-Added Compact-Mode
-Added LinkButton
-Several Improvements
+* added Compact-Mode
+* added LinkButton
+* Several Improvements
