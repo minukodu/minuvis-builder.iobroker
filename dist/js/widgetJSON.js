@@ -253,7 +253,7 @@ var widgetJSON = {
       default: "false",
       tooltip: "only for state-type: 'number'<br/>fill button if value matches exactly"
     },
-    nbOfbuttons: {
+    nbOfButtons: {
       type: "number",
       default: "4",
       min: "1",
