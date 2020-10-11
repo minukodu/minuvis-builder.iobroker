@@ -550,6 +550,16 @@ var widgetJSON = {
       default: "none",
       tooltip: "type of state"
     },
+    colheader: {
+      type: "string",
+      default: "header1,header2,header3",
+      tooltip: "Text of Tableheaders, comma-separated"
+    },
+    colsize: {
+      type: "string",
+      default: "100,100,100",
+      tooltip: "size of tablecolumns, comma-separated, 0 for hide column"
+    },
   },
   html: {
     type: "html",
