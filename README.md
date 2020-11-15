@@ -11,6 +11,12 @@ Big thanks to authors for these icon sets.
 
 ## Changelog
 
+### 1.8.0 (2020-11-15)
+* (svallant) new colorpicker-widget
+* (svallant) new huecolorpicker-widget
+* (svallant) new range-widget
+* (svallant) format for datepicker-widget
+
 ### 1.7.0 (2020-10-11)
 * (svallant) format for datepicker-widget
 * (svallant) format for timepicker-widget
