@@ -234,6 +234,9 @@ function init_widget_inline_form(widgettype, uuid) {
                           placeholder="` + prop + `" 
                           value="` + objProp.default + `"  >`;
           break;
+        case "colorFormat":
+          formInput += ``; // TODO
+          break;
         case "pageList":
           formInput += `<select id="` + inputUUID + `"  
                           class="widget-prop form-control form-control-sm  type-pageList prop-` + prop + `" 
