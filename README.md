@@ -11,6 +11,9 @@ Big thanks to authors for these icon sets.
 
 ## Changelog
 
+### 2.0.0-alpha (2021-03-08)
+* (svallant) several improvements for version 2
+
 ### 1.12.0 (2021-01-21)
 * (svallant) new donut-widget
 * (svallant) improvement of range-widget (fraction number as step possible)
