@@ -10,6 +10,12 @@ and the Material Design Icons Community Icons from https://github.com/Templarian
 Big thanks to authors for these icon sets.
 
 ## Changelog
+### 2.1.0 (2021-07-31)
+* (svallant) new schedex-widget
+* (svallant) new dropDown-widget
+* (svallant) new unicode-emoji-icons
+* (svallant) small layout-changes
+
 ### 2.0.0 (2021-05-22)
 * (svallant) security-update of handlebars.js
 * (svallant) bugfix: filename must have 6 characters
