@@ -10,6 +10,12 @@ and the Material Design Icons Community Icons from https://github.com/Templarian
 Big thanks to authors for these icon sets.
 
 ## Changelog
+### 2.6.0 (2025-12-12)
+* (svallant) fix bug with authentication
+* (svallant) fix bug in chart widget
+* (svallant) fix bug in link-button widget
+* (svallant) add links to indicator- and headline-widgets
+  
 ### 2.5.0 (2025-03-19)
 * (svallant) support username and password for connections
 * (svallant) new chart widget

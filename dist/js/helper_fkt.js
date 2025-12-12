@@ -351,7 +351,7 @@ function readWidgetConfig (widgetUUID) {
     }
     // is value in array ???
     if (propArrayKey > 0) {
-      let arrayType = "array_" + propArrayType;
+      let arrayType = 'array_' + propArrayType;
       if (newWidget[arrayType] === undefined) {
         newWidget[arrayType] = {};
       }
@@ -380,6 +380,8 @@ function readWidgetConfig (widgetUUID) {
         propName = $ (this).data ('prop');
         propValue = $ (this).val ();
         propType = $ (this).data ('type');
+        propArrayKey = $ (this).data ('arraykey') || 0;
+        propArrayType = $ (this).data ('arraytype') || 'noarray';
 
         if (propType == 'boolean') {
           propValue = stringToBoolean (propValue);
@@ -387,7 +389,28 @@ function readWidgetConfig (widgetUUID) {
         if (propType == 'number') {
           propValue = parseFloat (propValue);
         }
-        cardWidget[propName] = propValue;
+        // is value in array ???
+        if (propArrayKey > 0) {
+          let arrayType = 'array_' + propArrayType;
+          if (cardWidget[arrayType] === undefined) {
+            cardWidget[arrayType] = {};
+          }
+          if (cardWidget[arrayType][propArrayKey] === undefined) {
+            cardWidget[arrayType][propArrayKey] = {};
+          }
+          cardWidget[arrayType][propArrayKey][propName] = propValue;
+          console.log (
+            'cardWidget[' +
+              arrayType +
+              '][' +
+              propArrayKey +
+              '][' +
+              propName +
+              ']'
+          );
+        } else {
+          cardWidget[propName] = propValue;
+        }
       });
       console.log ('CardWidget:');
       console.log (cardWidget);
@@ -612,7 +635,7 @@ function selectFileFromList (elem) {
 
 function readConfigFromFile (fileName, oldFolder = false) {
   var meta = metaInfoSocketIO;
-  console.log ('readFile: ' + filePath + '/' + fileName);
+  console.log ('readFile: ' + meta + ',' + filePath + '/' + fileName);
   if (socket) {
     socket.emit ('readFile', meta, filePath + '/' + fileName, function (
       error,

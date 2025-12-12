@@ -8,7 +8,8 @@ function getDefaultLightTheme() {
         --sub-text-color: #999;
         --highlight-color: #0076ff;
         --second-highlight-color: #25a6d9;
-        --border-color: #ccc;
+        --border-color: #cccccc;
+        --chart-grid-color: #cccccc;
         --button-background-color: var(--highlight-color);
         --button-cta-background-color: var(--second-highlight-color);
         --toolbar-background-color: #fafafa;
@@ -163,6 +164,7 @@ function getDefaultDarkTheme() {
         --highlight-color: #00828b;
         --second-highlight-color: #da5926;
         --border-color: #5c5c5c;
+        --chart-grid-color: #cccccc;
         --button-background-color: var(--highlight-color);
         --button-cta-background-color: var(--second-highlight-color);
         --button-light-color: white;
