@@ -379,7 +379,9 @@ function addPage(pageData = {}, nbOfCols = 18) {
     .attr("data-id", uuid);
   $(newPage)
     .find("input.page-title")
-    .attr("value", pageTitle);
+    .attr("value", pageTitle)
+    .attr("data-id", uuid)
+    .attr("id", "pageTitle-" + uuid);
 
   $(newPage).find(".iconSelectPage")
     .val(pageIcon)
