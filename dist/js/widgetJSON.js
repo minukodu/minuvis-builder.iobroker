@@ -54,6 +54,16 @@ var widgetJSON = {
       default: 'false',
       tooltip: 'show widget in modal',
     },
+    hideModalIcon: {
+      type: 'boolean',
+      default: 'false',
+      tooltip: 'do not show the modal icon',
+    },
+    linkReference: {
+      type: 'string',
+      default: '',
+      tooltip: 'must be unique, can be used to open this element with an link-button or indicator',
+    },
     classes: {
       type: 'string',
       default: '',
@@ -387,6 +397,11 @@ var widgetJSON = {
       type: 'number',
       default: '100',
       tooltip: 'size of the widget in percent',
+    },
+    showAsCheckbox: {
+      type: 'boolean',
+      default: 'false',
+      tooltip: 'display as Checkbox',
     },
     stateIdDisabled: {
       type: 'stateId',

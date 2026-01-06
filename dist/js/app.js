@@ -1,7 +1,7 @@
 // App
 
 //////////////////////////////////
-var version = '2.6.0';
+var version = '2.6.2';
 //////////////////////////////////
 
 var numberOfCols = 18; // 18 cols grid
@@ -241,8 +241,13 @@ function init () {
       appConfig = generateConfig ();
       const url = encodeURIComponent (appConfig.dataprovider.url);
       const file = encodeURIComponent (appConfig.dataprovider.fileName);
+      let auth = "";
+      //console.warn ($ ('#chkAuth')[0].checked);
+      if ($ ('#chkAuth')[0].checked) {
+        auth = "&auth";
+      }
       const preViewURL =
-        '/' + appPath + '?url=' + url + '&file=' + file + '&forceUpdate';
+        '/' + appPath + '?url=' + url + '&file=' + file + '&forceUpdate' + auth;
 
       showPreviewQrCode (
         window.location.protocol + '//' + window.location.host + preViewURL

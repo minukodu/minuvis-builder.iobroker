@@ -1,8 +1,5 @@
-function getDefaultLightTheme() {
-    let theme =
-        `/* minuvis default light theme */
-        :root {
-        /* variables for iOS components */
+function getDefaultLightTheme () {
+  let theme = `:root {
         --background-color: #efeff4;
         --text-color: #1f1f21;
         --sub-text-color: #999;
@@ -73,8 +70,6 @@ function getDefaultLightTheme() {
         --toast-button-text-color: white;
         --select-input-color: var(--text-color);
         --select-input-border-color: var(--border-color);
-
-        /* variables for Material Design components */
         --material-background-color: #eceff1;
         --material-text-color: var(--text-color);
         --material-notification-background-color: #e91e63;
@@ -103,7 +98,7 @@ function getDefaultLightTheme() {
         --material-list-background-color: var(--list-background-color);
         --material-list-item-separator-color: #ccc;
         --material-list-header-text-color: #757575;
-        --material-checkbox-active-color: #37474f;
+        --material-checkbox-active-color: var(--highlight-color);
         --material-checkbox-inactive-color: #717171;
         --material-checkbox-checkmark-color: #ffffff;
         --material-radio-button-active-color: #37474f;
@@ -145,19 +140,14 @@ function getDefaultLightTheme() {
         --material-popover-text-color: var(--material-text-color);
         --material-action-sheet-text-color: #686868;
         --material-progress-bar-primary-color: #1e88e5;
-
-        /* others */
         --tap-highlight-color: transparent;
-        }`
+        }`;
 
-    return theme;
+  return theme;
 }
 
-function getDefaultDarkTheme() {
-    let theme =
-        `/* minuvis default dark theme */
-        :root {
-        /* variables for iOS components */
+function getDefaultDarkTheme () {
+  let theme = `:root {
         --background-color: #222222;
         --text-color: #fff;
         --sub-text-color: #999;
@@ -228,8 +218,6 @@ function getDefaultDarkTheme() {
         --toast-button-text-color: #000;
         --select-input-color: var(--text-color);
         --select-input-border-color: var(--border-color);
-
-        /* variables for Material Design components */
         --material-background-color: #303030;
         --material-text-color: #ffffff;
         --material-notification-background-color: #f50057;
@@ -258,7 +246,7 @@ function getDefaultDarkTheme() {
         --material-list-background-color: var(--list-background-color);
         --material-list-item-separator-color: rgba(255, 255, 255, 0.12);
         --material-list-header-text-color: #8a8a8a;
-        --material-checkbox-active-color: #fff;
+        --material-checkbox-active-color:  var(--highlight-color);
         --material-checkbox-inactive-color: #717171;
         --material-checkbox-checkmark-color: #000;
         --material-radio-button-active-color: #00828b;
@@ -300,10 +288,8 @@ function getDefaultDarkTheme() {
         --material-popover-text-color: var(--material-text-color);
         --material-action-sheet-text-color: #686868;
          --material-progress-bar-primary-color: #00828b;
-
-        /* others */
         --tap-highlight-color: transparent;
-        }`
+        }`;
 
-    return theme;
+  return theme;
 }

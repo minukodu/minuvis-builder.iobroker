@@ -99,6 +99,33 @@ function init_widget_settings_form (widgettype, uuid) {
   return widget_settings_form;
 }
 
+function checkLinkReference (element, uuid) {
+  console.log ('checkLinkReference');
+  //console.log ($ (element));
+  let elemId = $ (element)[0].id;
+  //console.log (elemId);
+  // sanitize strLinkReferenceing
+  let strLinkReference = $ ('#' + elemId).val ();
+  //console.log (strLinkReference);
+  strLinkReference = strLinkReference.replace (/[^a-z0-9áéíóúñü \.,_-]/gim, '');
+  strLinkReference = strLinkReference.trim ();
+  strLinkReference = strLinkReference.replace (/ /g, '_');
+  console.log (strLinkReference);
+  $ ('#' + elemId).val (strLinkReference);
+  // write string in data of parent-page
+  let pageLinkReferences = $ ('#' + uuid)
+    .closest ('.page')
+    .attr ('data-linkreferences');
+  let arrPageLinkReferences = [];
+  if (pageLinkReferences) {
+    arrPageLinkReferences = pageLinkReferences.split (' ');
+  }
+  arrPageLinkReferences.push (strLinkReference);
+  $ ('#' + uuid)
+    .closest ('.page')
+    .attr ('data-linkreferences', arrPageLinkReferences.join (' '));
+}
+
 function createWidgetFormByPropType (widgetJSON, widgettype, prop, key) {
   //console.log("createWidgetFormByPropType: " + widgettype);
   var widget_settings_form = '';
@@ -324,6 +351,9 @@ function createWidgetFormByPropType (widgetJSON, widgettype, prop, key) {
         break;
       case 'string':
         onChangeFkt = 'return true;';
+        if (prop === 'linkReference') {
+          onChangeFkt = "checkLinkReference(this, '" + uuid + "');";
+        }
         if (prop === 'title' || prop === 'url') {
           onChangeFkt =
             "$('#" +
@@ -632,6 +662,26 @@ function buildPageLinksSelect (element) {
       "'>" +
       $ (this).val () +
       '</option>';
+  });
+  $ ('.page').each (function () {
+    //console.log (this);
+    let linkReferences = $ (this).attr ('data-linkreferences');
+    if (linkReferences) {
+      let arrLinkReferences = linkReferences.split (' ');
+      $.each (arrLinkReferences, function (index, linkReference) {
+        if (linkReference == value) {
+          selected = "selected='selected'";
+        }
+        options +=
+          '<option ' +
+          selected +
+          " value='" +
+          "ref@" + linkReference +
+          "'>" +
+          "ref@" + linkReference +
+          '</option>';
+      });
+    }
   });
   $ (element).html ('');
   $ (element).html (options);
