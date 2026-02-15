@@ -10,6 +10,12 @@ and the Material Design Icons Community Icons from https://github.com/Templarian
 Big thanks to authors for these icon sets.
 
 ## Changelog
+### 2.7.0 (2026-02-15)
+* (svallant) no changes: align version with adapter
+
+### 2.6.6 (2026-02-01)
+* (svallant) bugfix stateId-fields
+
 ### 2.6.5 (2026-01-25)
 * (svallant) bugfix datepicker css
 
