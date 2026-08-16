@@ -2,3 +2,9 @@
 
 # app
 /minuvis
+
+# build tooling
+/node_modules
+/build
+/.vite
+*.log

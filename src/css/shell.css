@@ -1,0 +1,250 @@
+/**
+ * App shell (navbar, sidebar, content frame, footer) - replaces AdminLTE's
+ * CSS (2026-08 "neue Optik" pass). Deliberately reuses the SAME class
+ * names AdminLTE's markup already had (.wrapper, .main-header, .navbar,
+ * .main-sidebar, .brand-link/.brand-image/.brand-text, .nav-sidebar,
+ * .nav-item, .nav-link, .nav-icon, .content-wrapper, .main-footer) rather
+ * than renaming them - templates.js generates page-tab markup with these
+ * same class names at runtime (see getTemplates()'s `pageTab`/`page`
+ * strings), so reusing them means dynamically-added page tabs pick up the
+ * new look automatically without touching templates.js.
+ *
+ * Brand color matches the sibling minuvis-webapp/Capacitor app's teal
+ * (#00828b) for a consistent Minuvis product identity.
+ */
+
+:root {
+  --brand-teal: #00828b;
+  --sidebar-bg: #0b3d40;
+  --sidebar-bg-hover: #0f4d50;
+  --sidebar-text: #e7f3f3;
+  --sidebar-text-muted: #9fc4c4;
+  --navbar-bg: #ffffff;
+  --navbar-border: #dde3e4;
+  --content-bg: #eef2f3;
+  --sidebar-width: 250px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
+  background: var(--content-bg);
+  color: #1f2933;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ---------- Navbar ---------- */
+
+.main-header.navbar {
+  position: fixed;
+  top: 0;
+  left: var(--sidebar-width);
+  right: 0;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  background: var(--navbar-bg);
+  border-bottom: 1px solid var(--navbar-border);
+  padding: 0.4rem 0.75rem;
+  min-height: 56px;
+  transition: left 0.2s ease;
+}
+
+.main-header .navbar-nav {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.main-header .nav-link {
+  color: #4a5a5a;
+  padding: 0.35rem 0.6rem;
+}
+
+.main-header .nav-link:hover {
+  color: var(--brand-teal);
+}
+
+/* ---------- Sidebar ---------- */
+
+.main-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--sidebar-width);
+  background: var(--sidebar-bg);
+  color: var(--sidebar-text);
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  transition: margin-left 0.2s ease;
+  overflow-y: auto;
+}
+
+.brand-link {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.9rem 1rem;
+  color: #ffffff;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  flex-shrink: 0;
+}
+
+.brand-image {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+}
+
+.brand-text {
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.main-sidebar .sidebar {
+  padding-bottom: 1.5rem;
+}
+
+.nav-sidebar,
+.nav-sidebar .nav {
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 0;
+}
+
+.main-sidebar .nav-item {
+  height: auto;
+}
+
+.main-sidebar .nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 1rem;
+  color: var(--sidebar-text);
+  text-decoration: none;
+  font-size: 0.9rem;
+  border-left: 3px solid transparent;
+}
+
+.main-sidebar .nav-link:hover {
+  background: var(--sidebar-bg-hover);
+}
+
+.main-sidebar .nav-link.active {
+  background: var(--sidebar-bg-hover);
+  border-left-color: var(--brand-teal);
+  color: #ffffff;
+}
+
+.main-sidebar .nav-link p {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 1;
+}
+
+.main-sidebar .nav-icon {
+  width: 18px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.main-sidebar hr {
+  border-color: rgba(255, 255, 255, 0.12);
+  margin: 0.5rem 1rem;
+}
+
+/* Per-page nav entries (templates.js's `pageTab` template, inserted at
+ * runtime - not touched here) lay out badge/icon/title via Bootstrap's
+ * .container/.row/.col-sm-* grid. Bootstrap's grid gutters (15px/column)
+ * and default row wrapping are sized for full-width layouts, not a 250px
+ * sidebar - at that width the title column wraps onto its own line below
+ * the icon. Force a single row and trim the gutters instead of touching
+ * the generated markup. */
+.page-nav-item .container {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.page-nav-item .row {
+  flex-wrap: nowrap;
+  align-items: center;
+  margin-left: -0.25rem;
+  margin-right: -0.25rem;
+}
+
+.page-nav-item .row > [class*="col-"] {
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+
+.page-nav-item .nav-startpage-icon {
+  flex-shrink: 0;
+}
+
+.page-nav-item .page-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  max-width: 100%;
+}
+
+#preview-qrcode-holder-title,
+#preview-qrcode-holder {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  color: var(--sidebar-text-muted);
+}
+
+/* ---------- Content ---------- */
+
+.content-wrapper {
+  margin-left: var(--sidebar-width);
+  margin-top: 56px;
+  flex: 1;
+  min-height: calc(100vh - 56px);
+  transition: margin-left 0.2s ease;
+}
+
+.main-footer {
+  margin-left: var(--sidebar-width);
+  padding: 0.6rem 1rem;
+  background: var(--navbar-bg);
+  border-top: 1px solid var(--navbar-border);
+  color: #6b7878;
+  font-size: 0.85rem;
+  transition: margin-left 0.2s ease;
+}
+
+/* ---------- Sidebar collapse (pushmenu, see shell.js) ---------- */
+
+body.sidebar-collapse .main-sidebar {
+  margin-left: calc(var(--sidebar-width) * -1);
+}
+
+body.sidebar-collapse .main-header.navbar,
+body.sidebar-collapse .content-wrapper,
+body.sidebar-collapse .main-footer {
+  left: 0;
+  margin-left: 0;
+}
